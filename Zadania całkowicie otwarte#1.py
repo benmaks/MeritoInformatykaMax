@@ -1,7 +1,15 @@
 import PySimpleGUI as sg
 
-zadania = []
+zadania = ['test1', 'test2']
 poprawna_liczba = False
+
+sg.theme('DarkTeal11')
+def widocznosc_wykoniania():
+    if zadania:
+        return True
+    else:
+        return False
+
 
 def okno_listy():
     layout = [
@@ -9,20 +17,25 @@ def okno_listy():
         [sg.Column([[]], key='-KOL_ZAD-')]
     ]
 
-    window = sg.Window("Menedżer zadań", layout, finalize=True)
+    window = sg.Window("Menedżer zadań", layout, modal=True)
+
+    #if zadania:
+    #    window['-WYKONAJ-'].update(visible=True)
 
     for i in range(len(zadania)):
-        window.extend_layout(window['-KOL_ZAD-'], [[sg.Text(zadania[i]), sg.VSeparator(), sg.Text(f" Zadanie nr {i}")]])
+        window.extend_layout(window['-KOL_ZAD-'],[[sg.Text(zadania[i]), sg.VSeparator(), sg.Text(f" Zadanie nr {i+1}", key=f'-ZAD{i}-')]])
 
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED():
             break
+
     return None
 
 layout = [
     [sg.Button('Dodaj zadanie', key='-DODAJ-', expand_x=True)],
     [sg.Button('Wyświetl zadania', key='-WYSWIETL-', expand_x=True)],
+    [sg.Button("Wykonaj zadanie", key='-WYKONAJ-')],
     [sg.Button("Usuń zadanie", key='-USUN-', expand_x=True)],
     [sg.Button('Zakończ program', key='-ZAKONCZ-', expand_x=True)]
 ]
@@ -43,7 +56,7 @@ while True:
         usuwanie = True
         do_usuniecia = sg.popup_get_text('Wpisz numer zadania do usunięcia.')
         while usuwanie:
-            if do_usuniecia == "None":
+            if do_usuniecia == None:
                 usuwanie = False
             elif not do_usuniecia.isnumeric():
                 do_usuniecia = sg.popup_get_text("Nieprawidłowa odpowiedź. Wpisz numer zadania do usunięcia.")
@@ -61,6 +74,24 @@ while True:
             okno_listy()
         except:
             pass
+
+    if event == '-WYKONAJ-':
+        wykonywanie = True
+        do_wykonania = sg.popup_get_text('Wpisz numer zadania do oznaczenia jako wykonane.')
+        while wykonywanie:
+            if do_wykonania == None:
+                wykonywanie = False
+            elif not do_wykonania.isnumeric():
+                do_wykonania = sg.popup_get_text("Nieprawidłowa odpowiedź. Wpisz numer zadania do oznaczenia jako wykonane.")
+            else:
+                numer_indeksu = int(do_wykonania) - 1
+                if '[x]' in zadania[numer_indeksu]:
+                    do_wykonania = sg.popup_get_text("To zadanie jest już oznaczone jako wykonane. Wpisz numer zadania do oznaczenia jako wykonane.")
+                else:
+                    var = '[x] ' + zadania[numer_indeksu]
+                    zadania[numer_indeksu] = var
+                    wykonywanie = False
+
 
 
 
