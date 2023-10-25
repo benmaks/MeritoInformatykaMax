@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 
-zadania = ['test1', 'test2']
+zadania = []
 poprawna_liczba = False
 
 sg.theme('DarkTeal11')
