@@ -132,7 +132,7 @@ class Zegar:
 
 zegar1 = Zegar()
 
-zegar1.ustaw_czas(21, 37, 42)
+zegar1.ustaw_czas(21, 42, 37)
 zegar1.odliczaj()
 
 print(f"{zegar1.godzina}:{zegar1.minuta}:{zegar1.sekunda}")
